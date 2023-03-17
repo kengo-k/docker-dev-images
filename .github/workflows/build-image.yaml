@@ -38,7 +38,7 @@ jobs:
       run: |
         changed_dockerfiles="${{ steps.find_changed_dockerfiles.outputs.changed_dockerfiles }}"
         for dockerfile in $changed_dockerfiles; do
-          tags="ghcr.io/${{ github.actor }}/dev-base:${{ env.DATE_TAG }}-${{GITHUB_SHA }},ghcr.io/${{ github.actor }}dev-base:latest"
+          tags="ghcr.io/${{ github.actor }}/dev-base:${{ env.DATE_TAG }}-$GITHUB_SHA,ghcr.io/${{ github.actor }}dev-base:latest"
           echo "Building and pushing $image_name with context $context and tags $tags"
           docker build -t $tags -f $dockerfile
           for tag in $(echo $tags | tr "," "\n"); do
