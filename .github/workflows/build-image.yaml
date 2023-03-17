@@ -42,8 +42,8 @@ jobs:
 
   build:
     needs: prepare
-    if: needs.prepare.outputs.changed_dockerfiles != ''
     runs-on: ubuntu-latest
+    if: ${{ needs.prepare.outputs.changed_dockerfiles != '' }}
     
     steps:
     - name: aaa
