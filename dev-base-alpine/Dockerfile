@@ -1,6 +1,8 @@
 FROM alpine:3.17.2
 
-LABEL org.opencontainers.image.description "This is a DESCRIPTION"
+LABEL org.opencontainers.image.description="This is a DESCRIPTION \
+This is a DESCRIPTION \
+This is a DESCRIPTION"
 
 # setup user
 ARG USERNAME=container-user
