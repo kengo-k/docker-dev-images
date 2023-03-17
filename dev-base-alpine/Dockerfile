@@ -1,6 +1,6 @@
 FROM alpine:3.17.2
 
-LABEL description="this is a description!!"
+LABEL description="this is a description"
 # setup user
 ARG USERNAME=container-user
 ARG USER_UID=3000

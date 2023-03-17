@@ -74,6 +74,6 @@ jobs:
           docker build $tags -f $dockerfile $(dirname $dockerfile)
           for tag in $(echo $taglist | tr "," " "); do
             echo "docker push $tag"
-            #docker push $tag
+            docker push $tag
           done
         done
