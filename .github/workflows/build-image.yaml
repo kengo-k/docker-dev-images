@@ -8,6 +8,8 @@ on:
 jobs:
   prepare:
     runs-on: ubuntu-latest
+    outputs:
+      changed_dockerfiles: ${{ steps.set_output.outputs.changed_dockerfiles }}
     steps:
 
     # イメージのタグに付与する日付文字列を変数にセットしておく
