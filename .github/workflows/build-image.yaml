@@ -48,7 +48,7 @@ jobs:
     steps:
     - name: aaa
       run: |
-        echo "prev output: ${{ prepare.outputs.changed_dockerfiles }}"
+        echo "prev output: ${{ needs.prepare.outputs.changed_dockerfiles }}"
     # - name: Build and push Docker images
     #   if: ${{ steps.find_changed_dockerfiles.outputs.changed_dockerfiles }}
     #   run: |
