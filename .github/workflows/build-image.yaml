@@ -9,7 +9,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      changed_dockerfiles: ${{ steps.set_output.outputs.changed_dockerfiles }}
+      changed_dockerfiles: ${{ steps.set_output.outputs.hello }}
     
     steps:
 
@@ -38,7 +38,7 @@ jobs:
         echo "latest commit: ${{ github.sha }}"
         changed_dockerfiles=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep yaml || true)
         echo $changed_dockerfiles
-        echo "::set-output name=changed_dockerfiles::$changed_dockerfiles"
+        echo "::set-output name=hello::world"
 
   build:
     needs: prepare
@@ -48,7 +48,7 @@ jobs:
     steps:
     - name: aaa
       run: |
-        echo "prev output: ${{ needs.prepare.outputs.changed_dockerfiles }}"
+        echo "prev output: ${{ needs.prepare.outputs.hello }}"
     # - name: Build and push Docker images
     #   if: ${{ steps.find_changed_dockerfiles.outputs.changed_dockerfiles }}
     #   run: |
