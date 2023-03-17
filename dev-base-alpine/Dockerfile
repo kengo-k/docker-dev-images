@@ -1,7 +1,7 @@
 FROM alpine:3.17.2
 
 LABEL org.opencontainers.image.description="This is a DESCRIPTION \
-This is a DESCRIPTION \
+This is a DESCRIPTION<br> \
 This is a DESCRIPTION"
 
 # setup user
