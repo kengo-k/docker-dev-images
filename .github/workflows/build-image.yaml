@@ -28,7 +28,7 @@ jobs:
         previous_commit_sha=$(jq --raw-output '.before' $GITHUB_EVENT_PATH)
         echo "previous commit: $previous_commit_sha"
         echo "latest commit: $GITHUB_SHA"
-    #    changed_dockerfiles=$(git diff --name-only $previous_commit_sha $GITHUB_SHA | grep 'Dockerfile$')
+        changed_dockerfiles=$(git diff --name-only $previous_commit_sha $GITHUB_SHA | grep 'Dockerfile$')
     #    echo "Changed Dockerfiles: $changed_dockerfiles"
 
     # - name: Set up environment variables
