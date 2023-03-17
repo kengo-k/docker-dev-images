@@ -42,6 +42,9 @@ jobs:
     
     steps:
 
+    - name: checkout latest
+      uses: actions/checkout@v2
+
     # イメージのタグに付与する日付文字列を変数にセットしておく
     - name: set up environment variables
       run: |
