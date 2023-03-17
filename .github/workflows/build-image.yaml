@@ -32,15 +32,11 @@ jobs:
     - name: Find changed Dockerfiles
       id: find_changed_dockerfiles
       run: |
-        previous_commit_sha=$(jq --raw-output '.before' $GITHUB_EVENT_PATH)
         echo "previous commit: ${{ github.event.before }}"
-        echo "latest commit: $GITHUB_SHA"
-        ls -la
-        git branch -a
-        git log --oneline -n 5
-    #    echo "git diff --name-only ${previous_commit_sha:0:7} ${GITHUB_SHA:0:7} | grep 'Dockerfile$'"
-    #    changed_dockerfiles=$(git diff --name-only ${previous_commit_sha:0:7} ${GITHUB_SHA:0:7} | grep 'Dockerfile$')
-    #    echo "Changed Dockerfiles: $changed_dockerfiles"
+        echo "latest commit: ${{ github.sha }}
+        echo "git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'Dockerfile$'"
+        changed_dockerfiles=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'Dockerfile$')
+        echo "Changed Dockerfiles: $changed_dockerfiles"
 
     # - name: Set up environment variables
     #   run: |
