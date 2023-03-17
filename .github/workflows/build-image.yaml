@@ -28,6 +28,7 @@ jobs:
         previous_commit_sha=$(jq --raw-output '.before' $GITHUB_EVENT_PATH)
         echo "previous commit: $previous_commit_sha"
         echo "latest commit: $GITHUB_SHA"
+        git log -n 5
         echo "git diff --name-only ${previous_commit_sha:0:7} ${GITHUB_SHA:0:7} | grep 'Dockerfile$'"
         changed_dockerfiles=$(git diff --name-only ${previous_commit_sha:0:7} ${GITHUB_SHA:0:7} | grep 'Dockerfile$')
     #    echo "Changed Dockerfiles: $changed_dockerfiles"
