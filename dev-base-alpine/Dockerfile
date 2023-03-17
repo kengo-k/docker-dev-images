@@ -1,6 +1,7 @@
 FROM alpine:3.17.2
 
-LABEL description="base docker image for development"
+LABEL org.opencontainers.image.description "This is a DESCRIPTION"
+
 # setup user
 ARG USERNAME=container-user
 ARG USER_UID=3000
