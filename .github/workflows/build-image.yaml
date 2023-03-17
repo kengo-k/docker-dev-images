@@ -34,7 +34,7 @@ jobs:
       run: |
         echo "previous commit: ${{ github.event.before }}"
         echo "latest commit: ${{ github.sha }}"
-        changed_dockerfiles=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep Dockerfile)
+        changed_dockerfiles=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep yaml)
         echo $changed_dockerfiles
 
     # - name: Set up environment variables
