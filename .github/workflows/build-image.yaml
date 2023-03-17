@@ -61,11 +61,13 @@ jobs:
       run: |
         echo "prev output: ${{ needs.prepare.outputs.changed_dockerfiles }}"
         for dockerfile in ${{ needs.prepare.outputs.changed_dockerfiles }}; do
-          tags="ghcr.io/${{ github.actor }}/dev-base:${{ env.DATE_TAG }}-${GITHUB_SHA:0:7},ghcr.io/${{ github.actor }}dev-base:latest"
-          for tag in $(echo $tags | tr "," "\n"); do
-            echo "image: $tag"
-            echo "docker build -t $tag -f $dockerfile $(dirname $dockerfile)"
-            #docker build -t $tag -f $dockerfile
-            #docker push $tag
-          done
+          taglist="ghcr.io/${{ github.actor }}/dev-base:${{ env.DATE_TAG }}-${GITHUB_SHA:0:7},ghcr.io/${{ github.actor }}dev-base:latest"
+          tags=$(echo "$taglist" | sed 's/\([^,]*\)/-t \1/g')
+          echo "tags: $tags"
+          # for tag in $(echo $tags | tr "," "\n"); do
+          #   echo "image: $tag"
+          #   echo "docker build -t $tag -f $dockerfile $(dirname $dockerfile)"
+          #   #docker build -t $tag -f $dockerfile
+          #   #docker push $tag
+          # done
         done
