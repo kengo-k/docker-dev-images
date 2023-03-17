@@ -11,6 +11,13 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.before }}
+
+    - name: Fetch changes from latest commit
+      run: |
+        git fetch origin $GITHUB_SHA:refs/remotes/origin/main
+        git checkout $GITHUB_SHA
 
     # - name: Set up Docker Buildx
     #   uses: docker/setup-buildx-action@v1
@@ -26,7 +33,7 @@ jobs:
       id: find_changed_dockerfiles
       run: |
         previous_commit_sha=$(jq --raw-output '.before' $GITHUB_EVENT_PATH)
-        echo "previous commit: $previous_commit_sha"
+        echo "previous commit: ${{ github.event.before }}"
         echo "latest commit: $GITHUB_SHA"
         ls -la
         git branch -a
