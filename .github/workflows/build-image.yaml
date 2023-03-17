@@ -42,7 +42,7 @@ jobs:
 
   build:
     needs: prepare
-    # if: needs.prepare.outputs.changed_dockerfiles != ''
+    if: needs.prepare.outputs.changed_dockerfiles != ''
     runs-on: ubuntu-latest
     
     steps:
