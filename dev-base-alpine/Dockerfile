@@ -1,8 +1,6 @@
 FROM alpine:3.17.2
 
-LABEL org.opencontainers.image.description="This is a DESCRIPTION \
-This is a DESCRIPTION<br> \
-This is a DESCRIPTION"
+LABEL org.opencontainers.image.description="開発環境用のイメージのためのベースとなるイメージです。`git`、`openssh-client`、`make`が使用可能です。"
 
 # setup user
 ARG USERNAME=container-user
