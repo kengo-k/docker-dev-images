@@ -1,28 +1,49 @@
+name: Build and Push Changed Docker Images
+
 on:
   push:
     branches:
       - main
     paths:
-      - '**/Dockerfile'      
+      - '**/Dockerfile'
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-
     steps:
     - name: Check out code
       uses: actions/checkout@v2
 
-    - name: Log in to GitHub Container Registry
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to GitHub Container Registry
       uses: docker/login-action@v1
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GHCR_TOKEN }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v2
-      with:
-        context: ./dev-base-alpine
-        push: true
-        tags: ghcr.io/kengo-k/dev-base-alpine:latest
+    - name: Find changed Dockerfiles
+      id: find_changed_dockerfiles
+      run: |
+        previous_commit_sha=$(jq --raw-output '.before' $GITHUB_EVENT_PATH)
+        changed_dockerfiles=$(git diff --name-only $previous_commit_sha $GITHUB_SHA | grep 'Dockerfile$')
+        echo "Changed Dockerfiles: $changed_dockerfiles"
+
+    - name: Set up environment variables
+      run: |
+        echo "DATE_TAG=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
+
+    - name: Build and push Docker images
+      if: ${{ steps.find_changed_dockerfiles.outputs.changed_dockerfiles }}
+      run: |
+        changed_dockerfiles="${{ steps.find_changed_dockerfiles.outputs.changed_dockerfiles }}"
+        for dockerfile in $changed_dockerfiles; do
+          tags="ghcr.io/${{ github.actor }}/dev-base:${{ env.DATE_TAG }}-${{GITHUB_SHA }},ghcr.io/${{ github.actor }}dev-base:latest"
+          echo "Building and pushing $image_name with context $context and tags $tags"
+          docker build -t $tags -f $dockerfile
+          for tag in $(echo $tags | tr "," "\n"); do
+            docker push $tag
+          done
+        done
