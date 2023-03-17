@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       changed_dockerfiles: ${{ steps.set_output.outputs.changed_dockerfiles }}
+    
     steps:
 
     # イメージのタグに付与する日付文字列を変数にセットしておく
@@ -47,7 +48,7 @@ jobs:
     steps:
     - name: aaa
       run: |
-        echo "NEKO"
+        echo "prev output: ${{ prepare.outputs.changed_dockerfiles }}"
     # - name: Build and push Docker images
     #   if: ${{ steps.find_changed_dockerfiles.outputs.changed_dockerfiles }}
     #   run: |
