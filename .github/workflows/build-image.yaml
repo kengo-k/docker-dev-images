@@ -1,4 +1,4 @@
-name: build docker image and push image to GHCR
+name: build docker image and push to GHCR
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
         ref: ${{ github.event.before }}
 
     # 前回PUSHされたコミットから最新のコミットまでを取得する
-    - name: fetch changed between before and latest
+    - name: fetch changed files between before and latest
       run: |
         git fetch origin $GITHUB_SHA:refs/remotes/origin/main
         git checkout $GITHUB_SHA
@@ -38,6 +38,7 @@ jobs:
   build-and-push:
     needs: prepare
     runs-on: ubuntu-latest
+    # 変更されたDockerfileが検出された場合のみジョブを実行する
     if: ${{ needs.prepare.outputs.changed_dockerfiles != '' }}
     
     steps:
@@ -64,14 +65,15 @@ jobs:
       run: |
         echo "prev output: ${{ needs.prepare.outputs.changed_dockerfiles }}"
         for dockerfile in ${{ needs.prepare.outputs.changed_dockerfiles }}; do
-          taglist="ghcr.io/${{ github.actor }}/dev-base:${{ env.DATE_TAG }}-${GITHUB_SHA:0:7},ghcr.io/${{ github.actor }}/dev-base:latest"
+          context=$(dirname $dockerfile)
+          image=$(dirname $dockerfile | xargs basename)
+          echo "image: $image"
+          taglist="ghcr.io/${{ github.actor }}/$image:${{ env.DATE_TAG }}-${GITHUB_SHA:0:7},ghcr.io/${{ github.actor }}/$image:latest"
           tags=$(echo "$taglist" | sed 's/^/-t /; s/,/ -t /g')
-          echo "docker build $tags -f $dockerfile $(dirname $dockerfile)"
-          pwd
-          ls -la
+          echo "docker build $tags -f $dockerfile $context"
           docker build $tags -f $dockerfile $(dirname $dockerfile)
           for tag in $(echo $taglist | tr "," " "); do
             echo "docker push $tag"
-            docker push $tag
+            #docker push $tag
           done
         done
