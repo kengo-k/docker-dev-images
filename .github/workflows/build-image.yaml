@@ -63,7 +63,8 @@ jobs:
         for dockerfile in ${{ needs.prepare.outputs.changed_dockerfiles }}; do
           tags="ghcr.io/${{ github.actor }}/dev-base:${{ env.DATE_TAG }}-$GITHUB_SHA,ghcr.io/${{ github.actor }}dev-base:latest"
           for tag in $(echo $tags | tr "," "\n"); do
-            docker build -t $tag -f $dockerfile
-            docker push $tag
+            echo "image: $tag"
+            #docker build -t $tag -f $dockerfile
+            #docker push $tag
           done
         done
