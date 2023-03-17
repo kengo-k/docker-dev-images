@@ -71,8 +71,8 @@ jobs:
           ls -la
           docker build $tags -f $dockerfile $(dirname $dockerfile)
           for tag in $(echo $taglist | tr "," " "); do
-            echo "tag: $tag"
-            docker push $tag
+            echo "docker push $tag"
+            #docker push $tag
           done
           # for tag in $(echo $tags | tr "," "\n"); do
           #   echo "image: $tag"
