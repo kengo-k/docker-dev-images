@@ -36,7 +36,7 @@ jobs:
       run: |
         echo "previous commit: ${{ github.event.before }}"
         echo "latest commit: ${{ github.sha }}"
-        changed_dockerfiles=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep yaml || true)
+        changed_dockerfiles=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep Dockerfile || true)
         echo $changed_dockerfiles
         echo "::set-output name=changed_dockerfiles::$changed_dockerfiles"
 
