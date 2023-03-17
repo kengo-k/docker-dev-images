@@ -9,7 +9,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      changed_dockerfiles: ${{ steps.set_output.outputs.hello }}
+      hello: ${{ steps.set_output.outputs.hello }}
     
     steps:
 
