@@ -13,11 +13,6 @@ jobs:
     
     steps:
 
-    # イメージのタグに付与する日付文字列を変数にセットしておく
-    - name: set up environment variables
-      run: |
-        echo "DATE_TAG=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
-
     # 前回PUSHされた際のコミットを取得する
     - name: checkout before commit
       uses: actions/checkout@v2
@@ -40,34 +35,35 @@ jobs:
         echo $changed_dockerfiles
         echo "::set-output name=changed_dockerfiles::$changed_dockerfiles"
 
-  build:
+  build-and-push:
     needs: prepare
     runs-on: ubuntu-latest
     if: ${{ needs.prepare.outputs.changed_dockerfiles != '' }}
     
     steps:
-    - name: aaa
+
+    # イメージのタグに付与する日付文字列を変数にセットしておく
+    - name: set up environment variables
+      run: |
+        echo "DATE_TAG=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
+
+    - name: set up docker
+      uses: docker/setup-buildx-action@v1
+
+    - name: login to ghcr
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: build and push
       run: |
         echo "prev output: ${{ needs.prepare.outputs.changed_dockerfiles }}"
-    # - name: Build and push Docker images
-    #   if: ${{ steps.find_changed_dockerfiles.outputs.changed_dockerfiles }}
-    #   run: |
-    #     changed_dockerfiles="${{ steps.find_changed_dockerfiles.outputs.changed_dockerfiles }}"
-    #     for dockerfile in $changed_dockerfiles; do
-    #       tags="ghcr.io/${{ github.actor }}/dev-base:${{ env.DATE_TAG }}-$GITHUB_SHA,ghcr.io/${{ github.actor }}dev-base:latest"
-    #       echo "Building and pushing $image_name with context $context and tags $tags"
-    #       docker build -t $tags -f $dockerfile
-    #       for tag in $(echo $tags | tr "," "\n"); do
-    #         docker push $tag
-    #       done
-    #     done
-
-    # - name: Set up Docker Buildx
-    #   uses: docker/setup-buildx-action@v1
-
-    # - name: Login to GitHub Container Registry
-    #  uses: docker/login-action@v1
-      # with:
-      #   registry: ghcr.io
-      #   username: ${{ github.actor }}
-      #   password: ${{ secrets.GITHUB_TOKEN }}
+        for dockerfile in ${{ needs.prepare.outputs.changed_dockerfiles }}; do
+          tags="ghcr.io/${{ github.actor }}/dev-base:${{ env.DATE_TAG }}-$GITHUB_SHA,ghcr.io/${{ github.actor }}dev-base:latest"
+          for tag in $(echo $tags | tr "," "\n"); do
+            docker build -t $tag -f $dockerfile
+            docker push $tag
+          done
+        done
