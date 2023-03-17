@@ -26,9 +26,7 @@ jobs:
       id: find_changed_dockerfiles
       run: |
         previous_commit_sha=$(jq --raw-output '.before' $GITHUB_EVENT_PATH)
-        message=HELLO
-        echo $message
-        echo "previous commit: $previous_commit"
+        echo "previous commit: $previous_commit_sha"
     #    changed_dockerfiles=$(git diff --name-only $previous_commit_sha $GITHUB_SHA | grep 'Dockerfile$')
     #    echo "Changed Dockerfiles: $changed_dockerfiles"
 
