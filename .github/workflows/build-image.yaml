@@ -27,22 +27,22 @@ jobs:
       run: |
         previous_commit_sha=$(jq --raw-output '.before' $GITHUB_EVENT_PATH)
         echo "previous commit: $previous_commit"
-        changed_dockerfiles=$(git diff --name-only $previous_commit_sha $GITHUB_SHA | grep 'Dockerfile$')
-        echo "Changed Dockerfiles: $changed_dockerfiles"
+    #    changed_dockerfiles=$(git diff --name-only $previous_commit_sha $GITHUB_SHA | grep 'Dockerfile$')
+    #    echo "Changed Dockerfiles: $changed_dockerfiles"
 
-    - name: Set up environment variables
-      run: |
-        echo "DATE_TAG=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
+    # - name: Set up environment variables
+    #   run: |
+    #     echo "DATE_TAG=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
 
-    - name: Build and push Docker images
-      if: ${{ steps.find_changed_dockerfiles.outputs.changed_dockerfiles }}
-      run: |
-        changed_dockerfiles="${{ steps.find_changed_dockerfiles.outputs.changed_dockerfiles }}"
-        for dockerfile in $changed_dockerfiles; do
-          tags="ghcr.io/${{ github.actor }}/dev-base:${{ env.DATE_TAG }}-$GITHUB_SHA,ghcr.io/${{ github.actor }}dev-base:latest"
-          echo "Building and pushing $image_name with context $context and tags $tags"
-          docker build -t $tags -f $dockerfile
-          for tag in $(echo $tags | tr "," "\n"); do
-            docker push $tag
-          done
-        done
+    # - name: Build and push Docker images
+    #   if: ${{ steps.find_changed_dockerfiles.outputs.changed_dockerfiles }}
+    #   run: |
+    #     changed_dockerfiles="${{ steps.find_changed_dockerfiles.outputs.changed_dockerfiles }}"
+    #     for dockerfile in $changed_dockerfiles; do
+    #       tags="ghcr.io/${{ github.actor }}/dev-base:${{ env.DATE_TAG }}-$GITHUB_SHA,ghcr.io/${{ github.actor }}dev-base:latest"
+    #       echo "Building and pushing $image_name with context $context and tags $tags"
+    #       docker build -t $tags -f $dockerfile
+    #       for tag in $(echo $tags | tr "," "\n"); do
+    #         docker push $tag
+    #       done
+    #     done
