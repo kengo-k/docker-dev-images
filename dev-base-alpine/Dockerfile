@@ -1,6 +1,6 @@
 FROM alpine:3.17.2
 
-LABEL description="this is a description"
+LABEL description="base docker image for development"
 # setup user
 ARG USERNAME=container-user
 ARG USER_UID=3000

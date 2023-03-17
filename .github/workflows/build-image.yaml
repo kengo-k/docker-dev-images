@@ -49,7 +49,7 @@ jobs:
     # イメージのタグに付与する日付文字列を変数にセットしておく
     - name: set up environment variables
       run: |
-        echo "DATE_TAG=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
+        echo "DATE_TAG=$(TZ=Asia/Tokyo date +'%Y%m%d%H%M')" >> $GITHUB_ENV
 
     - name: set up docker
       uses: docker/setup-buildx-action@v1
