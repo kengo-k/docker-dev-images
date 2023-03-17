@@ -65,6 +65,7 @@ jobs:
           tags=$(echo "$taglist" | sed 's/^/-t /; s/,/ -t /g')
           echo "docker build $tags -f $dockerfile $(dirname $dockerfile)"
           pwd
+          ls -la
           # docker build $tags -f $dockerfile $(dirname $dockerfile)
 
           # for tag in $(echo $tags | tr "," "\n"); do
