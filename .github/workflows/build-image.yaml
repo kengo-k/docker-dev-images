@@ -61,9 +61,10 @@ jobs:
       run: |
         echo "prev output: ${{ needs.prepare.outputs.changed_dockerfiles }}"
         for dockerfile in ${{ needs.prepare.outputs.changed_dockerfiles }}; do
-          taglist="ghcr.io/${{ github.actor }}/dev-base:${{ env.DATE_TAG }}-${GITHUB_SHA:0:7},ghcr.io/${{ github.actor }}dev-base:latest"
+          taglist="ghcr.io/${{ github.actor }}/dev-base:${{ env.DATE_TAG }}-${GITHUB_SHA:0:7},ghcr.io/${{ github.actor }}/dev-base:latest"
           tags=$(echo "$taglist" | sed 's/^/-t /; s/,/ -t /g')
-          echo "tags: $tags"
+          docker build $tags -f $dockerfile $(dirname $dockerfile)
+
           # for tag in $(echo $tags | tr "," "\n"); do
           #   echo "image: $tag"
           #   echo "docker build -t $tag -f $dockerfile $(dirname $dockerfile)"
