@@ -33,7 +33,7 @@ jobs:
       id: find_changed_dockerfiles
       run: |
         echo "previous commit: ${{ github.event.before }}"
-        echo "latest commit: ${{ github.sha }}
+        echo "latest commit: ${{ github.sha }}"
         echo "git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'Dockerfile$'"
         changed_dockerfiles=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'Dockerfile$')
         echo "Changed Dockerfiles: $changed_dockerfiles"
