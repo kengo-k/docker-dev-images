@@ -6,19 +6,13 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # install required packages
-# RUN apt-get update && \
-#   apt-get install -y \
-#     curl \
-#     zsh \
-#     git \ 
-#     openssh-client \
-#     build-essential
-
 RUN apt-get update && \
   apt-get install -y \
-    git \
     curl \
-    zsh
+    zsh \
+    git \ 
+    openssh-client \
+    build-essential
 
 # setup user
 ARG USERNAME=container-user
@@ -36,11 +30,6 @@ COPY .zshrc /home/container-user/.zshrc
 
 # install asdf
 RUN git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.2
-
-RUN source ~/.zshrc && \
-  asdf plugin add golang && \
-  asdf install golang 1.20.2 && \
-  asdf global golang 1.20.2
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/bin/zsh"]
