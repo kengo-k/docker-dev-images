@@ -8,17 +8,20 @@ RUN chmod +x /entrypoint.sh
 # install required packages
 RUN apt-get update && \
   apt-get install -y \
+    sudo \
     curl \
     zsh \
     git \ 
     openssh-client \
+    iputils-ping \
     build-essential
 
 # setup user
 ARG USERNAME=container-user
-ARG USER_UID=3000
+ARG USER_UID=1000
 ARG USER_GID=$USER_UID
-RUN groupadd -r -g $USER_GID $USERNAME && useradd -r -u $USER_UID -g $USERNAME -m -s /bin/zsh $USERNAME
+RUN groupadd -r -g $USER_GID $USERNAME && useradd -r -u $USER_UID -g $USERNAME -m -s /bin/zsh $USERNAME \
+  && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 USER $USERNAME
 SHELL ["/bin/zsh", "-c"]
