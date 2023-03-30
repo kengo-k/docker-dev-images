@@ -1,6 +1,6 @@
 FROM ghcr.io/kengo-k/dev-base-ubuntu:202303191246-53cf423
 
-LABEL org.opencontainers.image.description="NodeJsによる開発を行うための開発用イメージ"
+LABEL org.opencontainers.image.description="NodeJsによる開発用イメージ(v19.8.1)"
 
 RUN source ~/.zshrc && \
   asdf plugin add nodejs && \
