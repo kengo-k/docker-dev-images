@@ -15,7 +15,7 @@ RUN apt-get update && \
     curl \
     zsh \
     git \ 
-    openssh-client \
+    openssh-server \
     iputils-ping \
     tzdata \
     build-essential \
