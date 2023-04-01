@@ -1,6 +1,9 @@
 FROM ubuntu:22.04
 
-LABEL org.opencontainers.image.description="開発環境用のイメージのためのベースとなるイメージです。"
+LABEL org.opencontainers.image.description="開発用イメージのためのベースイメージです(Ubuntu 22.04)"
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Tokyo
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
@@ -14,7 +17,10 @@ RUN apt-get update && \
     git \ 
     openssh-client \
     iputils-ping \
-    build-essential
+    tzdata \
+    build-essential \
+    locales && \
+    locale-gen ja_JP.UTF-8
 
 # setup user
 ARG USERNAME=container-user
