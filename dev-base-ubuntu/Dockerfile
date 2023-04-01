@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-LABEL org.opencontainers.image.description="開発用イメージのためのベースイメージです(Ubuntu 22.04)"
+LABEL org.opencontainers.image.description="開発用イメージのためのベースイメージです(ver: Ubuntu 22.04)"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Tokyo
