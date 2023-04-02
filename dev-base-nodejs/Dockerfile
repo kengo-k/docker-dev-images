@@ -1,4 +1,4 @@
-FROM ghcr.io/kengo-k/dev-base-ubuntu:202304020012-967953b
+FROM ghcr.io/kengo-k/dev-base-ubuntu:202304021124-f884216
 
 LABEL org.opencontainers.image.description="NodeJsによる開発用イメージ(v19.8.1)"
 
