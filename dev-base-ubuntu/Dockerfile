@@ -29,6 +29,7 @@ RUN groupadd -r -g $USER_GID $USERNAME && useradd -r -u $USER_UID -g $USERNAME -
   && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 USER $USERNAME
+RUN mkdir ~/.ssh && chmod 755 ~/.ssh
 
 COPY .bashrc /home/container-user/.bashrc
 
