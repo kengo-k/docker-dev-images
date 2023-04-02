@@ -13,7 +13,6 @@ RUN apt-get update && \
   apt-get install -y \
     sudo \
     curl \
-    zsh \
     git \ 
     openssh-server \
     iputils-ping \
@@ -30,15 +29,11 @@ RUN groupadd -r -g $USER_GID $USERNAME && useradd -r -u $USER_UID -g $USERNAME -
   && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 USER $USERNAME
-SHELL ["/bin/zsh", "-c"]
 
-# install oh-my-zsh
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-COPY .zshrc /home/container-user/.zshrc
+COPY .bashrc /home/container-user/.bashrc
 
 # install asdf
 RUN git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.2
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["/bin/zsh"]
+CMD ["/bin/bash"]
