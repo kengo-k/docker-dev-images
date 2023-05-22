@@ -26,8 +26,10 @@ RUN apt-get update && \
 ARG USERNAME=container-user
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
-RUN groupadd -r -g $USER_GID $USERNAME && useradd -r -u $USER_UID -g $USERNAME -m $USERNAME \
-  && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN groupadd -r -g $USER_GID $USERNAME \
+  && useradd -r -u $USER_UID -g $USERNAME -m $USERNAME \
+  && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
+  && chsh -s /bin/bash container-user
 
 USER $USERNAME
 RUN mkdir ~/.ssh && chmod 755 ~/.ssh
